@@ -10,6 +10,7 @@
   "author": "Garen Ikezian",
   "license": "ISC",
   "dependencies": {
-    "got": "^14.0.0"
+    "got": "^14.0.0",
+    "yargs": "^17.7.2"
   }
 }
