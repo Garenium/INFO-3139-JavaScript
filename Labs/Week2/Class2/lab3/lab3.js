@@ -44,25 +44,49 @@ let gtfData;
 
 const someAsyncFunction = async (userInput) => {
   try {
-    let results = await fullNameAndProvincePromise(userInput.firstname, userInput.lastname, userInput.province);
+    let results = await fullNameAndProvincePromise(
+      userInput.firstname,
+      userInput.lastname,
+      userInput.province
+    );
 
-    process.stdout.write(`${results.firstname}, ${results.lastname} lives in ${results.province}. `)
+    process.stdout.write(
+      `${results.firstname}, ${results.lastname} lives in ${results.province}. `
+    );
     // console.log(`${results.firstname}, ${results.lastname} lives in ${results.province}`)
 
     gtfData = await transferPaymentsFromWebPromise();
     // console.log("Sucess");
 
-    const prov = results.province.toLowerCase();
+    let prov = results.province.toLowerCase();
     let paymentData = await transferPaymentForProvincePromise(gtfData, prov);
+    console.log(`It received ${paymentData} in transfer payments`)
+
+    let paymentDataArr = await Promise.allSettled(
+      provinces.map((provinces) => {
+        prov = provinces.code.toLowerCase();
+        return transferPaymentForProvincePromise(gtfData, prov);
+      })
+    );
+
+    console.log(paymentDataArr);
+    for(let i = 0; i < paymentDataArr.length; i++){
+      if(results.province == provinces[i].code){
+        console.log(`\x1b[1m${provinces[i].name} had a transfer payment of ${paymentDataArr[i].value}`);
+      }else{
+        console.log(`\x1b[0m${provinces[i].name} had a transfer payment of ${paymentDataArr[i].value}`);
+      }
+    }
+    // for(i = 0; i < paymentDataArr.length; ++i){
+    //   if(paymentDataArr)
+    // }
     //put console.log
     console.log();
-
   } catch (err) {
     console.log(err);
   }
 };
-someAsyncFunction({firstname, lastname, province});
-
+someAsyncFunction({ firstname, lastname, province });
 
 //1st PROMISE
 // const fullNameAndProvincePromise = async (firstname, lastname, province) => {
