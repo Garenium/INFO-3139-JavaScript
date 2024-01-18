@@ -69,7 +69,6 @@ const someAsyncFunction = async (userInput) => {
       })
     );
 
-    console.log(paymentDataArr);
     for(let i = 0; i < paymentDataArr.length; i++){
       if(results.province == provinces[i].code){
         console.log(`\x1b[1m${provinces[i].name} had a transfer payment of ${paymentDataArr[i].value}`);
