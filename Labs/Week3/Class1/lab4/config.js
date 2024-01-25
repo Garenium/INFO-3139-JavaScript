@@ -1,4 +1,4 @@
-import {config} from "dotenv";
-config();
-export const COUNTRIES = process.env.COUNTRIES;
-export const ISOCOUNTRIES = process.env.USERSJSON;
+import { config } from "dotenv";
+config(); // Make sure dotenv is properly configured
+export const countries = process.env.COUNTRIES;
+export const isocountries = process.env.ISOCOUNTRIES;
