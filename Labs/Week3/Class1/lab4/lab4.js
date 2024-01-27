@@ -14,7 +14,7 @@ const argv = yargs(hideBin(process.argv))
     refresh: {
       demandOption: false,
       describe: "Is a fresh copy from the web required?",
-      string: true,
+      boolean: true,
     },
     help: {
       demandOption: false,
@@ -39,7 +39,7 @@ const countries_lab4_function = async () => {
     //Does the file exist?
     //Is the user forcing to rewrite the countries.json file (with the refresh attribute)?
     //Check if the link exists, create/write it to the file, read the file.
-    if (!doesFileExist || refresh === "--refresh") {
+    if (!doesFileExist || refresh) {
       //Get the link
       const jsonData = await rtnLib.getJSONFromWWWPromise(cfg.isocountries);
 

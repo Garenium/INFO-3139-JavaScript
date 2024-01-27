@@ -11,8 +11,9 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\Labs\\Week2\\Class1\\PartA\\lab2.js",
-            "args": ["--fname", "Garen", "--lname", "Ikezian", "--prov", "ON"],
+            "program": "${workspaceFolder}\\Labs\\Week3\\Class1\\Lab4\\lab4.js",
+            /*{workspaceFolder}\\Labs\\Week3\\Class1\\Lab4\\lab4.js*/
+            "args": ["--refresh"]
         }
     ]
 }
