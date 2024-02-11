@@ -2,28 +2,25 @@ import { getJSONFromWWWPromise } from "./utilities.js";
 import * as cfg from "./config.js";
 import * as dbRtns from "./db_routines.js";
 
-const project1_function = async () => {
+const loadAlerts = async () => {
+
+        let results = "";
     try {
 
         const db = await dbRtns.getDBInstance();
-
-        // console.log(`Collection: ${cfg.alertscollection}`)
-
         //Delete any existing documents from an alerts collection in the database
-        let results = await dbRtns.deleteAll(db, cfg.alertscollection);
-        console.log(
-        `Deleted ${results.deletedCount} documents from the alerts collection`
-        );
+        let deletedData = await dbRtns.deleteAll(db, cfg.alertscollection);
+        results += `Deleted ${deletedData.deletedCount} documents from the alerts collection `;
 
         //Obtain the country ISO JSON from GitHub and place it in an array variable
         let countryJSON = await getJSONFromWWWPromise(cfg.isocountries);
         const countriesNum = Object.keys(countryJSON).length;  
-        console.log(`Retrieved Country JSON from Github.`);
+        results += `Retrieved Country JSON from Github. `;
 
         //Obtain the ALERT JSON from the GOC site
         let travelalertsJSON = await getJSONFromWWWPromise(cfg.travelalerts);
         const travelalertsNum = Object.keys(travelalertsJSON.data).length;  
-        console.log(`Retrieved Alert JSON from remote web site`);
+        results += `Retrieved Alert JSON from remote web site. `;
 
         let alertsArray = [];
 
@@ -58,14 +55,18 @@ const project1_function = async () => {
 
         await dbRtns.addMany(db, cfg.alertscollection, alertsArray);
 
-        console.log(`added ${alertsArray.length} documents to the alerts function`);
+        results += `added ${alertsArray.length} documents to the alerts function.`;
+
+        console.log(results);
 
         process.exit(0);
 
     } catch (err) {
         console.log(err);
         process.exit(1);
+    } finally {
+        return { results: results};
     }
 }
 
-project1_function();
+export {loadAlerts};
