@@ -1,16 +1,14 @@
 import { createTheme } from "@mui/material/styles";
 export default createTheme({
-  typography: {
-    useNextVariants: true,
-  },
+  
   palette: {
     common: {
       black: "#000",
       white: "#fff"
     },
     background: {
-      paper: "#fafafa", // Adjusted to light gray for light mode
-      default: "#fff"   // Adjusted to white for light mode
+      paper: "#fff",
+      default: "#fafafa"
     },
     primary: {
       light: "#7986cb",
@@ -35,6 +33,7 @@ export default createTheme({
       secondary: "rgba(0, 0, 0, 0.54)",
       disabled: "rgba(0, 0, 0, 0.38)",
       hint: "rgba(0, 0, 0, 0.38)"
-    },
-  },
+    }
+  }
+  
 });

@@ -7,7 +7,7 @@ import {
   Snackbar,
   Typography,
 } from "@mui/material";
-import theme from "./theme";
+import theme from "../../theme";
 const MaterialUIEx3Component = () => {
   // When you attempt to update state, whatever is passed into setState
   // (which is typically called dispatch) is passed on to the reducer as

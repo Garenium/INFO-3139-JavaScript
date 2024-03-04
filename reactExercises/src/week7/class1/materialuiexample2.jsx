@@ -8,7 +8,7 @@ import {
   Typography,
   TextField,
 } from "@mui/material";
-import theme from "./theme";
+import theme from "../../theme";
 import "../../App.css";
 const MaterialUIEx2Component = () => {
   const [selection, setSelection] = useState("");
