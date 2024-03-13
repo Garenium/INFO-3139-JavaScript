@@ -7,3 +7,4 @@ export const isocountries = process.env.ISOCOUNTRIES;
 export const alertscollection = process.env.ALERTCOLLECTION;
 export const port = process.env.PORT;
 export const graphql = process.env.GRAPHQLURL;
+export const advisorycollection = process.env.ADVISORYCOLLECTION;

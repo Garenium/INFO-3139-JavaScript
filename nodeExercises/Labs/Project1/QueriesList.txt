@@ -1,0 +1,19 @@
+1.
+mutation ($name: String, $country: String) {
+  addadvisory(name: $name, country: $country) {
+    name, country }}
+
+2.A.
+query ($name: String) {
+  list_advisories_by_name(name: $name) {
+     name, country, text, date }}
+
+2.B.
+query ($region: String) {
+  alerts_for_region(region: $region) {
+     name, country, text, date }}
+
+2.C.
+query ($subregion: String) {
+  alerts_for_subregion(subregion: $subregion) {
+     name, country, text, date }}

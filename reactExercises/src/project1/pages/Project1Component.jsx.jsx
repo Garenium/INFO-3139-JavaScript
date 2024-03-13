@@ -1,16 +1,17 @@
 import React from "react";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "../../theme";
+import theme from "../theme";
 import { Card, CardContent, CardHeader, Typography } from "@mui/material";
 import "../../App.css";
+import logo from "./logo.png";
+import ShowWebsiteTitle from "./showTitle";
+
+
 const Project1 = () => {
   return (
     <ThemeProvider theme={theme}>
       <Card className="card">
-        <CardHeader
-          title="World Wide Travel Alerts"
-          style={{ color: theme.palette.primary.main, textAlign: "center" }}
-        />
+       <ShowWebsiteTitle/>
         <CardContent>
           <br />
           <Typography
@@ -24,4 +25,5 @@ const Project1 = () => {
     </ThemeProvider>
   );
 };
+
 export default Project1;

@@ -11,11 +11,12 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import MaterialUIEx3Component from "./week7/class1/materialuiexample3";
-import MaterialUIEx5Component from "./week7/class2/materialuiexample5";
-import MaterialUIEx6Component from "./week7/class2/materialuiexample6";
-import MaterialUIEx7aComponent from "./week7/class2/materialuiexample7a";
-import Lab13Component from "./week7/class2/Lab13/lab13";
+import Project1 from "./project1/pages/Project1Component.jsx";
+import AlertComponent from "./project1/pages/AlertSetupComponent.jsx";
+import AddAdvisory from "./project1/pages/AdvisoryAddComponent";
+import ListAdvisory from "./project1/pages/AdvisoryListcomponent.jsx";
+// import MaterialUIEx7aComponent from "./week7/class2/materialuiexample7a";
+// import Lab13Component from "./week7/class2/Lab13/lab13";
 const App = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClose = () => {
@@ -47,28 +48,28 @@ const App = () => {
             <MenuItem component={NavLink} to="/home" onClick={handleClose}>
               Home
             </MenuItem>
-            <MenuItem component={NavLink} to="/ex3" onClick={handleClose}>
-              Exercise #3
+            <MenuItem component={NavLink} to="/alert" onClick={handleClose}>
+              Reset Data 
             </MenuItem>
-            <MenuItem component={NavLink} to="/ex6" onClick={handleClose}>
-              Exercise #6
+            <MenuItem component={NavLink} to="/addAdvisory" onClick={handleClose}>
+              Add Advisory 
             </MenuItem>
-            <MenuItem component={NavLink} to="/ex7" onClick={handleClose}>
-              Exercise #7
+            <MenuItem component={NavLink} to="/listAdvisories" onClick={handleClose}>
+              List Advisories 
             </MenuItem>
-            <MenuItem component={NavLink} to="/lab13" onClick={handleClose}>
+            {/*<MenuItem component={NavLink} to="/lab13" onClick={handleClose}>
               Lab 13 
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
         </Toolbar>
       </AppBar>
       <Routes>
-        <Route path="/" element={<MaterialUIEx5Component />} />
-        <Route path="/home" element={<MaterialUIEx5Component />} />
-        <Route path="/ex3" element={<MaterialUIEx3Component />} />
-        <Route path="/ex6" element={<MaterialUIEx6Component />} />
-        <Route path="/ex7" element={<MaterialUIEx7aComponent />} />
-        <Route path="/lab13" element={<Lab13Component />} />
+        <Route path="/" element={<Project1/>} />
+        <Route path="/home" element={<Project1/>} />
+        <Route path="/alert" element={<AlertComponent/>} />
+        <Route path="/addAdvisory" element={<AddAdvisory/>} />
+        <Route path="/listAdvisories" element={<ListAdvisory />} />
+        {/*<Route path="/lab13" element={<Lab13Component />} /> */}
       </Routes>
     </ThemeProvider>
   );

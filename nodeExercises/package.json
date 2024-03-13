@@ -18,6 +18,7 @@
     "graphql": "^16.8.1",
     "mercurius": "^13.3.3",
     "mongodb": "^6.3.0",
+    "react-router-dom": "^6.22.3",
     "yargs": "^17.7.2"
   }
 }
