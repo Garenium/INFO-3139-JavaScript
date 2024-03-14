@@ -147,6 +147,7 @@ const AddAdvisory = () => {
                 fullWidth
               />
             )}
+            key={(option) => option.id} // Ensure each option has a unique key
           />
           <Snackbar
             open={state.showMsg}

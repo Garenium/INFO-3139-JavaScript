@@ -30,7 +30,7 @@ const App = () => {
       <AppBar>
         <Toolbar>
           <Typography variant="h6" color="inherit">
-            INFO3139 - MaterialUI
+            INFO3139 - Case #1
           </Typography>
           <IconButton
             onClick={handleClick}
