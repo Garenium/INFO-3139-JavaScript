@@ -69,12 +69,16 @@ const loadAlerts = async () => {
   }
 };
 
-// const loadRegions = async () => {
-//   let alerts = await loadAlerts();
-//   let regionsUnique = await alerts.map((region) => alerts.region);
-//   regionsUnique = await Array.from(new Set(regionsUnique));
-//   return regionsUnique;
-// }
+const loadAdvisories = async () => {
+  try {
+    const db = await dbRtns.getDBInstance();
+    let advisories = await dbRtns.findAll(db, cfg.advisorycollection);
+    return advisories;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
 
 const addAdvisory = async (args) => {
   try {
@@ -177,9 +181,9 @@ const listAdvisoryBySubregion = async (args) => {
 export {
   project1Setup,
   loadAlerts,
+  loadAdvisories,
   addAdvisory,
   listAdvisoryByName,
   listAdvisoryByRegion,
   listAdvisoryBySubregion,
-  // loadRegions,
 };
