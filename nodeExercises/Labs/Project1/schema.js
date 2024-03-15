@@ -6,12 +6,12 @@ type Query {
     project1_setup: Results,
     alerts: [Alert],
     advisories: [Advisory],
-    list_alerts_for_region(region: String): [Alert],
-    list_alerts_for_subregion(subregion: String): [Alert],
-    list_advisories_by_name(name: String): [Advisory]
-    regions: [String],
-    subregions: [String],
-    travellers: [String],
+    region(region: String): [Alert],
+    subregion(subregion: String): [Alert],
+    traveller(name: String): [Advisory]
+    regions_unique: [String],
+    subregions_unique: [String],
+    travellers_unique: [String],
 },
 type Alert {
     country: String

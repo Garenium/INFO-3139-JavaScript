@@ -37,7 +37,7 @@ const resolvers = {
       return null;
     }
   },
-  regions: async () => {
+  regions_unique: async () => {
     console.log("THIS IS REGIONS");
     try {
       let alerts = await p1.loadAlerts();
@@ -49,7 +49,7 @@ const resolvers = {
       return null;
     }
   },
-  subregions: async () => {
+  subregions_unique: async () => {
     console.log("THIS IS SUBREGIONS");
     try {
       let alerts = await p1.loadAlerts();
@@ -61,7 +61,7 @@ const resolvers = {
       return null;
     }
   },
-  travellers: async () => {
+  travellers_unique: async () => {
     try {
       const db = await dbRtns.getDBInstance();
       let advisories = await dbRtns.findAll(db, cfg.advisorycollection);
@@ -81,19 +81,19 @@ const resolvers = {
     console.log(advisories);
     return advisories;
   },
-  list_advisories_by_name: async (args) => {
-    console.log("THIS IS LIST_ADVISORIES_BY_NAME");
+  traveller: async (args) => {
+    console.log("THIS IS LIST_ADVISORIES_BY_NAME (TRAVELLER)");
     let advisories = await p1.listAdvisoryByName(args);
     return advisories;
   },
-  list_alerts_for_region: async (args) => {
-    console.log("THIS IS LIST_ADVISORIES_BY_NAME");
+  region: async (args) => {
+    console.log("THIS IS LIST_ADVISORIES_BY_NAME (REGION)");
     let countries = await p1.listAdvisoryByRegion(args);
 
     return countries;
   },
-  list_alerts_for_subregion: async (args) => {
-    console.log("THIS IS LIST_ADVISORIES_BY_NAME");
+  subregion: async (args) => {
+    console.log("THIS IS LIST_ADVISORIES_BY_NAME (subregion)");
     let countries = await p1.listAdvisoryBySubregion(args);
     return countries;
   },
