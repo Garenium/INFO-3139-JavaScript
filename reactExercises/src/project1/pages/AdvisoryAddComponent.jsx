@@ -131,6 +131,7 @@ const AddAdvisory = () => {
             onChange={handleNameInput}
             placeholder="Traveler's name"
             value={state.name}
+            autoComplete='off'
           />
           <p></p>
           <Autocomplete

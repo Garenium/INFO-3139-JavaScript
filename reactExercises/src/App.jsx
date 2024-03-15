@@ -12,9 +12,9 @@ import {
   Typography,
 } from "@mui/material";
 import Project1 from "./project1/pages/Project1Component.jsx";
-import AlertComponent from "./project1/pages/AlertSetupComponent.jsx";
+import AlertComponent from "./project1/pages/AlertSetupComponent";
 import AddAdvisory from "./project1/pages/AdvisoryAddComponent";
-import ListAdvisory from "./project1/pages/AdvisoryListcomponent.jsx";
+import ListAdvisory from "./project1/pages/AdvisoryListComponent.jsx";
 // import MaterialUIEx7aComponent from "./week7/class2/materialuiexample7a";
 // import Lab13Component from "./week7/class2/Lab13/lab13";
 const App = () => {

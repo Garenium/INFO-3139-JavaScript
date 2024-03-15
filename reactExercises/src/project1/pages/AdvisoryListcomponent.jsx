@@ -27,7 +27,7 @@ import ShowWebsiteTitle from "./showTitle";
 
 const ListAdvisory = () => {
   const initialState = {
-    showMsg: false,
+    showMsg: true,
     snackbarMsg: "",
     name: "",
     showTable: false,
@@ -35,12 +35,15 @@ const ListAdvisory = () => {
   const reducer = (state, newState) => ({ ...state, ...newState });
   const [state, setState] = useReducer(reducer, initialState);
   const [selectedOption, setSelectedOption] = useState(null);
-  const [options, setOptions] = useState([]); //
+  const [options, setOptions] = useState([]); //list the options based on the radio buttons
+  const [advisoryData, setAdvisoryData] = useState([]);
   const [selectedButton, setSelectedButton] = useState("traveller"); //From radio buttons
+  const [initialFetchComplete, setInitialFetchComplete] = useState(false);
 
   const handleButtonChange = (event) => {
     setSelectedButton(event.target.value);
     setSelectedOption(null); // Reset selected option when radio button changes
+    setState({ showTable: false }); // Hide the table when radio button changes
   };
 
   const fetchOptions = async () => {
@@ -52,18 +55,18 @@ const ListAdvisory = () => {
     try {
       switch (selectedButton) {
         case "traveller":
-          queryStr = `query {travellers} `;
+          queryStr = `query {travellers_unique} `;
           break;
         case "region":
-          queryStr = `query {regions} `;
+          queryStr = `query {regions_unique} `;
           break;
         case "subregion":
-          queryStr = `query {subregions} `;
+          queryStr = `query {subregions_unique} `;
           break;
         default:
           break;
       }
-
+  
       const response = await fetch("http://localhost:5000/graphql", {
         method: "POST",
         headers: {
@@ -71,56 +74,66 @@ const ListAdvisory = () => {
         },
         body: JSON.stringify({ query: queryStr }),
       });
-
+  
       let json = await response.json();
-      const selection = selectedButton + "s";
-
-      const optionsData = json.data[selection];
-      console.log(optionsData);
+      const selection = selectedButton;
+      const jsonObj = selectedButton + "s_unique";
+  
+      const optionsData = json.data[jsonObj];
+      // console.log(optionsData);
       setOptions(optionsData);
       setState({
-        snackbarMsg: `Found ${json.data[selection].length} ${selection}`,
+        snackbarMsg: `Found ${json.data[jsonObj].length} ${selection + "s"}`,
         showMsg: true,
         contactServer: true,
       });
+      setInitialFetchComplete(true); // Move this line here
     } catch (err) {
       console.log(err);
       return null;
     }
   };
 
-  const listSelectedOption = async () => {
+  const listSelectedOption = async (selectedOption) => {
     try {
       let query = "";
       let variables = {};
+      let querySelectList = "";
+
       switch (selectedButton) {
         case "traveller":
           query = `query ($name: String) {
-            list_advisories_by_name(name: $name) {
-              name, country, text, date
-            }
-          }`;
-          variables = { name: state.selectedOption };
+              traveller(name: $name) {
+                name, country, text, date
+              }
+            }`;
+          variables = { name: selectedOption };
+          querySelectList = "list_advisories_by_name";
           break;
         case "region":
           query = `query ($region: String) {
-            alerts_for_region(region: $region) {
-              name, country, text, date
-            }
-          }`;
-          variables = { region: state.selectedOption };
+              region(region: $region) {
+                name, country, text, date
+              }
+            }`;
+          variables = { region: selectedOption };
+          querySelectList = "alerts_for_region";
           break;
         case "subregion":
           query = `query ($subregion: String) {
-            alerts_for_subregion(subregion: $subregion) {
-              name, country, text, date
-            }
-          }`;
-          variables = { subregion: state.selectedOption };
+              subregion(subregion: $subregion) {
+                name, country, text, date
+              }
+            }`;
+          variables = { subregion: selectedOption };
+          querySelectList = "alerts_for_subregion";
           break;
         default:
           break;
       }
+
+      console.log("SELECTED OPTION");
+      console.log(selectedOption);
 
       const response = await fetch("http://localhost:5000/graphql", {
         method: "POST",
@@ -135,14 +148,17 @@ const ListAdvisory = () => {
       }
 
       const json = await response.json();
-      console.log(json); // Log the response for debugging
-      const optionsData =
-        json.data[
-          selectedButton === "traveller"
-            ? "list_advisories_by_name"
-            : `alerts_for_${selectedButton}`
-        ];
-      // setOptions(optionsData);
+      console.log(json); // debug
+      const advisoryData = json.data[selectedButton];
+      console.log(advisoryData);
+      console.log("THIS IS advisoryData: " + advisoryData);
+      setState({
+        showMsg: true,
+        showTable: true,
+        snackbarMsg: `Found ${advisoryData.length} alerts for ${selectedOption}`,
+      });
+
+      setAdvisoryData(advisoryData);
     } catch (error) {
       console.error("Error fetching options:", error);
     }
@@ -150,12 +166,16 @@ const ListAdvisory = () => {
 
   useEffect(() => {
     fetchOptions();
-    listSelectedOption();
+    // listSelectedOption();
   }, [selectedButton, state.name]);
 
   const onChange = (event, value) => {
-    setSelectedOption(value);
-    setState({ country: value?.name || "", showTable: true }); // Show table when option is selected
+    if (value) {
+      console.log(value); // Log the selected value for debugging
+      setSelectedOption(value);
+      setState({ name: value.name, showTable: false }); // Update name and showTable state
+      listSelectedOption(value); // Fetch selected option data
+    }
   };
 
   const snackbarClose = () => {
@@ -233,15 +253,16 @@ const ListAdvisory = () => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {options.map((row) => (
-                    <TableRow
-                      key={row.name}
-                    >
-                      {/* <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell> */}
-                      <TableCell>5</TableCell>
-                      <TableCell>4</TableCell>
+                  {advisoryData.map((row) => (
+                    <TableRow key={row.date}>
+                      <TableCell>
+                        {selectedButton === "traveller"
+                          ? row.country
+                          : row.name}
+                      </TableCell>
+                      <TableCell>
+                        {row.text} {row.date}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -249,7 +270,7 @@ const ListAdvisory = () => {
             </TableContainer>
           )}
           <Snackbar
-            open={state.showMsg}
+            open={state.showMsg && !state.showTable && !initialFetchComplete}
             message={state.snackbarMsg}
             autoHideDuration={4000}
             onClose={snackbarClose}
