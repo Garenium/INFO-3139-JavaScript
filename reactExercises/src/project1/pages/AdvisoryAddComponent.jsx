@@ -27,6 +27,8 @@ const AddAdvisory = () => {
   const reducer = (state, newState) => ({ ...state, ...newState });
   const [state, setState] = useReducer(reducer, initialState);
   const [countries, setCountries] = useState([]);
+  // const GRAPHURL = "http://localhost:5000/graphql";
+  const GRAPHURL = "/graphql";
 
   useEffect(() => {
     // Fetch the list of countries from an API or predefined list
@@ -36,7 +38,7 @@ const AddAdvisory = () => {
           contactServer: true,
           snackBarMsg: "Attempting to load from server...",
         });
-        let response = await fetch("http://localhost:5000/graphql", {
+        let response = await fetch(GRAPHURL, {
           method: "POST",
           headers: {
             "Content-Type": "application/json; charset=utf-8",

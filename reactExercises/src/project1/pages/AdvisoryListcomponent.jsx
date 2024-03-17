@@ -39,6 +39,8 @@ const ListAdvisory = () => {
   const [advisoryData, setAdvisoryData] = useState([]);
   const [selectedButton, setSelectedButton] = useState("traveller"); //From radio buttons
   const [initialFetchComplete, setInitialFetchComplete] = useState(false);
+  // const GRAPHURL = "http://localhost:5000/graphql";
+  const GRAPHURL = "/graphql";
 
   const handleButtonChange = (event) => {
     setSelectedButton(event.target.value);
@@ -67,7 +69,7 @@ const ListAdvisory = () => {
           break;
       }
   
-      const response = await fetch("http://localhost:5000/graphql", {
+      const response = await fetch(GRAPHURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
@@ -135,7 +137,7 @@ const ListAdvisory = () => {
       console.log("SELECTED OPTION");
       console.log(selectedOption);
 
-      const response = await fetch("http://localhost:5000/graphql", {
+      const response = await fetch(GRAPHURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",

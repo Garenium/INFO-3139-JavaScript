@@ -15,6 +15,8 @@ const AlertComponent = () => {
 
   const reducer = (state, newState) => ({ ...state, ...newState });
   const [state, setState] = useReducer(reducer, initialState);
+  // const GRAPHURL = "http://localhost:5000/graphql";
+  const GRAPHURL = "/graphql";
 
   useEffect(() => {
     fetchSetupDetails();
@@ -27,7 +29,7 @@ const AlertComponent = () => {
         snackBarMsg: "Running setup...",
       });
 
-      let response = await fetch("http://localhost:5000/graphql", {
+      let response = await fetch(GRAPHURL, {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
