@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef, useReducer } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import io from "socket.io-client";
-import { TextField, Button, AppBar, Toolbar, Typography, Container } from "@mui/material";
+import { TextField, Button, Container, Typography } from "@mui/material";
 import theme from "./theme.js";
 import Bar from "./Bar.jsx";
 
-const Scenario1Test = () => {
+const Scenario1And2Test = () => {
   const initialState = {
     chatName: "",
     roomName: "",
@@ -31,12 +31,19 @@ const Scenario1Test = () => {
       transports: ["websocket"],
       autoConnect: true,
       reconnection: false,
+      connect_timeout: 5000,
       timeout: 5000,
     });
 
     socket.on("nameexists", onExists);
     socket.on("welcome", addMessageToList);
     socket.on("someonejoined", addMessageToList);
+    socket.on("someoneleft", addMessageToList); // Registering event handler for 'someoneleft'
+    // socket.on("someoneleft", () => {
+    //     console.log("I'M INSIDE 'ON SOMEONELEFT'")
+    //  handleDisconnect(); // Call handleDisconnect and pass the socket object
+    // });
+
 
     setState({ socket: socket });
   };
@@ -48,8 +55,6 @@ const Scenario1Test = () => {
       messages: messages,
       showjoinfields: false,
     });
-
-    console.log(messages);
   };
 
   const onExists = (msg) => {
@@ -65,9 +70,6 @@ const Scenario1Test = () => {
   };
 
   const handleJoin = () => {
-    //check if the username already exists
-    console.log(state.chatName);
-    console.log(state.roomName);
     state.socket.emit("join", {
       chatName: state.chatName,
       roomName: state.roomName,
@@ -101,7 +103,6 @@ const Scenario1Test = () => {
           />
           <Button
             variant="contained"
-            data-testid="submit"
             color="primary"
             onClick={() => handleJoin()}
             disabled={state.chatName === "" || state.roomName === ""}
@@ -113,17 +114,19 @@ const Scenario1Test = () => {
         </Container>
       ) : null}
       {!state.showjoinfields ? (
-         <Container maxWidth="xs" sx={{ marginTop: "80px" }}>
-          <h1 style={{textAlign: 'center'}}>Scenario 1 Test</h1>
+        <Container maxWidth="xs" sx={{ marginTop: "80px" }}>
+          <h3 style={{ textAlign: "center" }}>
+            Lab 18 - Scenarios 1 and 2 Test
+          </h3>
           {state.messages.map((message, index) => (
             <Typography style={{ marginLeft: "5vw" }} key={index}>
               {message.text}
             </Typography>
           ))}
-         </Container>
+        </Container>
       ) : null}
     </ThemeProvider>
   );
 };
 
-export default Scenario1Test;
+export default Scenario1And2Test;

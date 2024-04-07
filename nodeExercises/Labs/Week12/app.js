@@ -21,9 +21,9 @@ io.on("connection", (socket) => {
   });
 
   // scenario 2 - client disconnects from server
-  // socket.on("disconnect", () => {
-  //   socketHandlers.handleDisconnect(socket);
-  // });
+  socket.on("disconnect", () => {
+    socketHandlers.handleDisconnect(socket);
+  });
 });
 
 // Handle 404 errors

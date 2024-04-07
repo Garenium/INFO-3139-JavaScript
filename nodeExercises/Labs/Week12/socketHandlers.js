@@ -1,39 +1,72 @@
 const users = [];
 
 const handleJoin = async (socket, clientData) => {
-    const room = clientData.roomName;
-    const name = clientData.chatName;
-    
-    console.log("chatname: " + room);
-    console.log("roomname: " + name);
-    // check if name is already in use
+  const room = clientData.roomName;
+  const name = clientData.chatName;
 
-    const isNameTaken = await users.find((user) => user.name === clientData.chatName);
-    console.log(users);
-    console.log("IS NAME TAKEN: " + isNameTaken);
+  console.log("chatname: " + name);
+  console.log("roomname: " + room);
 
-    if (isNameTaken) {
-        // name has to be unique 
-        socket.emit('nameexists', {message: 'Name is already taken.'});
-    } else {
-        // emit welcome message to the joining client
-        socket.emit('welcome', { message: `Welcome ${name}.` });
+  // check if name is already in use
+  console.log(users);
+  const isNameTaken = users.some((user) => user.name === name);
+  console.log("DOES NAME EXIST IN ARRAY?: " + isNameTaken);
 
-        users.push({ name });
+  if (isNameTaken) {
+    // name has to be unique
+    console.log(`NAME IS TAKEN: ${name}`);
+    socket.emit("nameexists", `${name} is already taken.`);
+  } else {
+    // emit welcome message to the joining client
+    // emit welcome message to the joining client
+    console.log("NAME DOES NOT EXIST. ADDING NAME");
+    socket.emit("welcome", { text: `Welcome ${name}.` });
 
-        await socket.join(room);
+    users.push({ socketId: socket.id, name: name, room: room });
+    console.log("CURRENT ARRAY: " + users);
 
-        // must emit this to all other clients except for the one who is joining
-        await socket.to(room).emit('someonejoined', { message: `${name} joined the room.` });
+    await socket.join(room);
+
+    // must emit this to all other clients except for the one who is joining
+    await socket
+      .to(room)
+      .emit("someonejoined", { text: `${name} has joined the ${room} room.` });
+  }
+};
+
+const handleDisconnect = async (socket) => {
+  let disconnectedUser;
+
+  users.forEach((user) => {
+    if (socket.id === user.socketId) {
+      disconnectedUser = user;
     }
-}
+  });
 
-function handleDisconnect(socket){
-    const {chatname, roomname} = clientdata;
-    console.log("handledisconnect: not implemented yet")
-    return;
-}
+  console.log(disconnectedUser);
 
+  if (disconnectedUser) {
+    const userRoom = disconnectedUser.room;
 
+    const index = users.findIndex(
+      (user) => user.name === disconnectedUser.name
+    );
+    if (index !== -1) {
+      users.splice(index, 1);
+      console.log(
+        `ENDING handleDiscconect(): ${disconnectedUser.name} HAS LEFT THE ROOM ${disconnectedUser.room}`
+      );
+      console.log("CURRENT ARRAY: " + users);
+    }
+
+    socket
+      .to(userRoom)
+      .emit("someoneleft", {
+        text: `${disconnectedUser.name} has left the room ${disconnectedUser.room}.`,
+      });
+  } else {
+    console.log(`disconnecting user failed`);
+  }
+};
 
 export { handleJoin, handleDisconnect };
