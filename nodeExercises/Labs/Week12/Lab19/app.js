@@ -3,6 +3,7 @@ import express from "express";
 import http from "http";
 import { Server } from "socket.io";
 import * as socketHandlers from "./socketHandlers.js";
+import matColours from "./matdes100colours.json" assert { type: "json" };
 
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -11,6 +12,11 @@ app.use(express.static("public"));
 
 const httpServer = http.createServer(app);
 const io = new Server(httpServer);
+
+//set up admin color first
+let coloridx = Math.floor(Math.random() * matColours.colours.length);
+let adminColor = matColours.colours[coloridx];
+console.log(`ADMIN COLOUR: ${adminColor}`);
 
 io.on("connection", (socket) => {
   console.log("new connection established");
@@ -56,3 +62,5 @@ app.use((error, req, res, next) => {
 httpServer.listen(port, () => {
   console.log(`listening on port ${port}`);
 });
+
+export default adminColor;

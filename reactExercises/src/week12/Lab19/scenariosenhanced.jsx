@@ -167,7 +167,7 @@ const ScenariosEnhanced = () => {
           />
           <h4 style={{ marginTop: 40 }}>Current Messages</h4>
           <div className="scenario-container">
-            Messages
+            Messages in {state.roomName}
             {state.messages.map((message, index) => (
               <ChatMsg msg={message} key={index} />
             ))}
