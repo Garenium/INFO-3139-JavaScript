@@ -15,6 +15,7 @@ import Bar from "./Bar.jsx";
 import ChatMsg from "./chatmsg.jsx";
 import "../App.css";
 import MessageIcon from "@mui/icons-material/Message";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const ScenariosEnhanced = () => {
   const initialState = {
@@ -33,6 +34,9 @@ const ScenariosEnhanced = () => {
       rooms: [],
       colors: [],
     },
+    // users: [],
+    // rooms: [],
+    // colors: [],
   };
   const reducer = (state, newState) => ({ ...state, ...newState });
   const [state, setState] = useReducer(reducer, initialState);
@@ -64,9 +68,7 @@ const ScenariosEnhanced = () => {
     socket.on("someoneleft", addMessageToList); // Registering event handler for 'someoneleft'
     socket.on("someoneistyping", onTyping);
     socket.on("newmessage", onNewMessage);
-    socket.on("updateuserlist", updateUsersList);
 
-    console.log(state.dialogData);
     setState({ socket: socket });
   };
 
@@ -76,6 +78,7 @@ const ScenariosEnhanced = () => {
       rooms: props.users.map((user) => user.room),
       colors: props.users.map((user) => user.color),
     };
+
     setState({ dialogData: data });
   };
 
@@ -141,6 +144,9 @@ const ScenariosEnhanced = () => {
       chatName: state.chatName,
       roomName: state.roomName,
     });
+
+    state.socket.on("updateuserlist", updateUsersList);
+    console.log(state.dialogData);
   };
 
   return (
@@ -198,12 +204,12 @@ const ScenariosEnhanced = () => {
             onClose={handleCloseDialog}
             style={{ margin: 20 }}
           >
-            <DialogTitle style={{ textAlign: "center" }}>Who's on</DialogTitle>
+            <DialogTitle style={{ textAlign: "center" }}>Who's on?</DialogTitle>
             <DialogContent>
               {state.dialogData.users.length > 0 ? (
                 state.dialogData.users.map((user, index) => (
                   <p key={index}>
-                    {state.dialogData.colors[index]}: {user} is in room{" "}
+                    <AccountCircleIcon style={{color: state.dialogData.colors[index]}}/> {user} is in room{" "}
                     {state.dialogData.rooms[index]}
                   </p>
                 ))
@@ -213,8 +219,14 @@ const ScenariosEnhanced = () => {
             </DialogContent>
           </Dialog>
           <h3 style={{ textAlign: "center" }}>Lab 18 - Scenario Enhanced</h3>
-          {/* <h3 style={{ textAlign: "center" }}>{state.dialoggData}</h3> */}
-          <TextField
+          <h4 style={{ marginTop: 40 }}>Current Messages</h4>
+          <div className="scenario-container">
+            Messages in {state.roomName}
+            {state.messages.map((message, index) => (
+              <ChatMsg msg={message} key={index} />
+            ))}
+          </div>
+            <TextField
             onChange={onMessageChange}
             placeholder="type something here"
             autoFocus={true}
@@ -226,13 +238,6 @@ const ScenariosEnhanced = () => {
               }
             }}
           />
-          <h4 style={{ marginTop: 40 }}>Current Messages</h4>
-          <div className="scenario-container">
-            Messages in {state.roomName}
-            {state.messages.map((message, index) => (
-              <ChatMsg msg={message} key={index} />
-            ))}
-          </div>
           <div style={{ marginTop: 20, color: "black" }}>
             <Typography color="primary">{state.typingMsg}</Typography>
           </div>

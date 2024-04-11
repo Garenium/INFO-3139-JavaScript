@@ -101,15 +101,15 @@ const handleMessage = async (io, socket, clientData) => {
   });
 };
 
-const handleGetRoomsAndUsers = async (io) => {
-  console.log("GETTING DATA");
+// const handleGetRoomsAndUsers = async (io) => {
+//   console.log("GETTING DATA");
 
-  let returnUsersData = [];
+//   let returnUsersData = [];
 
-  for (const user of users) {
-    returnUsersData.push({ user: user.name, room: user.room, color: user.color });
-  }
+//   for (const user of users) {
+//     returnUsersData.push({ user: user.name, room: user.room, color: user.color });
+//   }
 
-  await io.emit("updateuserlist", {users: returnUsersData});
-}
-export { handleJoin, handleDisconnect, handleTyping, handleMessage, handleGetRoomsAndUsers };
+//   await io.emit("updateuserlist", {users: returnUsersData});
+// }
+export { handleJoin, handleDisconnect, handleTyping, handleMessage };
