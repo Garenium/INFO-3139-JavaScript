@@ -1,0 +1,15 @@
+[
+
+  { "name": "Clara Schumann", "age": 34, "email": "c@here.com" },
+  { "name": "Dmitri Mendeleev", "age": 20, "email": "d@here.com" },
+  { "name": "Nikola Tesla", "age": 20, "email": "n@here.com" },
+  { "name": "Vladimir Horowitz", "age": 80, "email": "v@here.com" },
+  { "name": "Marie Curie", "age": 30, "email": "m@here.com" },
+  { "name": "Louis Pasteur", "age": 27, "email": "l@here.com" },
+  { "name": "Terry Fox", "age": 28, "email": "t@here.com" },
+  { "name": "Alexander Graham Bell", "age": 70, "email": "a@here.com" },
+  { "name": "Brian Kernighan", "age": 78, "email": "b@here.com" },
+  { "name": "Frederic Chopin", "age": 30, "email": "f@here.com" },
+  { "name": "Rosalind Franklin", "age": 30, "email": "r@here.com" },
+  { "name": "Garen Ikezian", "age": 22, "email": "gikezian@fanshaweonline.com" }
+]

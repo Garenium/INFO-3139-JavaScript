@@ -1,0 +1,28 @@
+.usersList {
+  margin-top: 1vh;
+  margin-bottom: 1vh;
+  margin-left: 2vw;
+  box-sizing: border-box;
+  height: calc(50vh);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+body {
+  place-items: unset !important;
+}
+.card {
+  margin-left: 5vw;
+  margin-top: 15vh;
+  width: 90vw;
+}
+.userBubble {
+font-family: Arial, Helvetica, sans-serif;
+font-size: smaller;
+position: relative;
+padding: 2vw;
+width: 58vw;
+margin-bottom: -1em;
+border-radius: 10px;
+left: -3vw;
+color: white;
+}
