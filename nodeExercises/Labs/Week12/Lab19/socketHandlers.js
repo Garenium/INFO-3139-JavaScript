@@ -10,7 +10,7 @@ const handleJoin = async (socket, clientData) => {
   const isNameTaken = users.some((user) => user.name === name);
 
   if (isNameTaken) {
-    socket.emit("nameexists", `${name} is already taken.`);
+    await socket.emit("nameexists", `${name} is already taken.`);
   } else {
     //Set the color for the user
     let coloridx = Math.floor(Math.random() * matColours.colours.length);
@@ -18,7 +18,7 @@ const handleJoin = async (socket, clientData) => {
 
     users.push({ socketId: socket.id, name: name, room: room, color: color });
 
-    socket.emit("welcome", {
+    await socket.emit("welcome", {
       text: ` Welcome ${name}.`,
       authortime: `Admin Says @${moment().format("h:mm:ss a")}`,
       color: adminColor,
@@ -58,7 +58,7 @@ const handleDisconnect = async (socket) => {
       );
     }
 
-    socket.to(userRoom).emit("someoneleft", {
+    await socket.to(userRoom).emit("someoneleft", {
       text: `${disconnectedUser.name} has left the room ${disconnectedUser.room}.`,
       authortime: `Admin Says @${moment().format("h:mm:ss a")}`,
       color: adminColor,
@@ -68,16 +68,16 @@ const handleDisconnect = async (socket) => {
   }
 };
 
-const handleTyping = (socket, clientData) => {
+const handleTyping = async (socket, clientData) => {
   console.log("IN handleTyping()");
   const name = clientData.from;
   const index = users.findIndex((user) => user.name === name);
   const room = users[index].room;
 
-  socket.to(room).emit("someoneistyping", { text: `${name} is typing...` });
+  await socket.to(room).emit("someoneistyping", { text: `${name} is typing...` });
 };
 
-const handleMessage = (io, socket, clientData) => {
+const handleMessage = async (io, socket, clientData) => {
   console.log("IN handleMessage():");
   const name = clientData.from;
   const index = users.findIndex((user) => user.name === name);
@@ -94,11 +94,22 @@ const handleMessage = (io, socket, clientData) => {
   // let coloridx = Math.floor(Math.random() * matColours.colours.length);
   // let color = matColours.colours[coloridx];
 
-  io.in(room).emit("newmessage", {
+  await io.in(room).emit("newmessage", {
     text: msg,
     authortime: authortime,
     color: color,
   });
 };
 
-export { handleJoin, handleDisconnect, handleTyping, handleMessage };
+const handleGetRoomsAndUsers = async (io) => {
+  console.log("GETTING DATA");
+
+  let returnUsersData = [];
+
+  for (const user of users) {
+    returnUsersData.push({ user: user.name, room: user.room, color: user.color });
+  }
+
+  await io.emit("updateuserlist", {users: returnUsersData});
+}
+export { handleJoin, handleDisconnect, handleTyping, handleMessage, handleGetRoomsAndUsers };

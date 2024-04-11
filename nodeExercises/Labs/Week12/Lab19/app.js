@@ -24,11 +24,14 @@ io.on("connection", (socket) => {
   //Scenario 1 - client connects to the server
   socket.on("join", (clientData) => {
     socketHandlers.handleJoin(socket, clientData);
+    console.log("HELLO");
+    socketHandlers.handleGetRoomsAndUsers(io);
   });
 
   // scenario 2 - client disconnects from server
   socket.on("disconnect", () => {
-    socketHandlers.handleDisconnect(socket);
+    socketHandlers.handleDisconnect(socket); 
+    socketHandlers.handleGetRoomsAndUsers(io);
   });
 
   //scenario 3 - client sends notification that user started typing
